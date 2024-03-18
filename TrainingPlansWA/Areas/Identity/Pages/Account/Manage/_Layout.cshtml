@@ -1,0 +1,128 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+
+@* <h1>Manage your account</h1> *@
+
+<div class="account">
+
+
+    <div class="account_links_dropdown-btn_wrapper">
+            <button class="account_links_dropdown-btn">
+                Настройки учётной записи
+                <i class='bx bx-chevron-down'></i>
+            </button>
+            <div class="account_links_dropdown-container">
+                <a id="profile" asp-page="./Index">
+                <li class="account_link first_account_link to-highlight">Аккаунт</li>
+                </a>
+
+                <a id="change-password" asp-page="./ChangePassword">
+                    <li class="account_link">Пароль</li>
+                </a>
+            </div>
+    </div>
+
+
+    <div class="account_related_links">
+        <div class="col-md-3">
+            <partial name="_ManageNav" />
+        </div>
+    </div>
+    <div class="account_page_data">      
+        
+                @RenderBody()
+           
+    </div>
+   
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
+@* скрипт для открытия дроп баттона *@
+<script>
+    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+    var dropdown = document.getElementsByClassName("account_links_dropdown-btn");
+    var i;
+    for (i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function () {
+            this.classList.toggle("account_links_dropdown-btn-active");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        });
+    }
+</script>
+
+@* скрипт для подсвечивания активной ссылки *@
+@* работает одновременно (!!!) для бокового и горизонтального меню *@
+<script>
+    // Получаем текущий путь страницы
+    var currentPage = window.location.pathname;
+    // Функция для подсветки активной ссылки
+    function highlightActiveLink() {
+        //подсвечиваем ссылку "Аккаунт" при переходе на страницу удаления аккаунта, т.к. в панели ссылок нет ссылки на эту страницу
+        if (currentPage === "/Identity/Account/Manage/DeletePersonalData") {
+            //console.log(linkPath);
+            console.log("hello there");
+            var links = document.querySelectorAll('.to-highlight')
+            if (links) {
+                links.forEach(function (link) {
+                    // Получаем путь страницы, на который указывает ссылка
+                    link.classList.add('account_link_active');
+                });
+            }
+        }
+        else {
+            // Находим все ссылки внутри горизонтального контейнера
+            var links = document.querySelectorAll('.account_links_dropdown-container a');
+            if (links) {
+                // Перебираем каждую ссылку
+                links.forEach(function (link) {
+                    // Получаем путь страницы, на который указывает ссылка
+                    var linkPath = link.getAttribute('href');
+                    // Проверяем, соответствует ли текущий путь страницы пути из ссылки
+                    if (currentPage === linkPath) {
+                        // Добавляем класс для подсветки
+                        var li = link.firstElementChild; // получаем ближайший родительский элемент li
+                        if (li) {
+                            li.classList.add('account_link_active');
+                        }
+                    }
+                });
+            }
+            // Находим все ссылки внутри вертикального контейнера
+            links = document.querySelectorAll('.account_link_list a');
+            if (links) {
+                // Перебираем каждую ссылку
+                links.forEach(function (link) {
+                    // Получаем путь страницы, на который указывает ссылка
+                    var linkPath = link.getAttribute('href');
+                    // Проверяем, соответствует ли текущий путь страницы пути из ссылки
+                    if (currentPage === linkPath) {
+
+                        // Добавляем класс для подсветки
+                        var li = link.firstElementChild; // получаем ближайший родительский элемент li
+                        if (li) {
+                            console.log("closest li found");
+                            li.classList.add('account_link_active');
+                        }
+                    }
+                });
+            }
+        }
+    }
+    // Вызываем функцию для подсветки активной ссылки при загрузке страницы
+    window.onload = highlightActiveLink;
+</script>

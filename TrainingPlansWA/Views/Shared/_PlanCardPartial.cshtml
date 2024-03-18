@@ -1,0 +1,50 @@
+﻿@model Tuple<IEnumerable<TrainingPlansWA.Models.CreatedPlan>, TrainingPlansWA.Areas.Identity.Data.UserModel>
+
+@foreach (var plan in Model.Item1) {
+    @if (plan.Category == "Hands") {
+        <div class="card">
+            <div class="card_top_image top-for-hands">
+                <div class="remove_from_creations bx bx-x" title="Удалить план" data-id=@plan.Id></div>
+                <div class="edit_creation bx bx-sm bx-pencil" title="Редактировать план" data-id=@plan.Id></div>
+
+            </div>
+            <div class="text">
+                <ul class="list">
+                    @foreach (var Exercise in plan.Exercises) {
+                        <li>@Exercise.Name</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+    @if (plan.Category == "Legs") {
+        <div class="card">
+            <div class="card_top_image top-for-legs">
+                <div class="remove_from_creations bx bx-x" title="Удалить план" data-id=@plan.Id></div>
+                <div class="edit_creation bx bx-sm bx-pencil" title="Редактировать план" data-id=@plan.Id></div>
+            </div>
+            <div class="text">
+                <ul class="list">
+                    @foreach (var Exercise in plan.Exercises) {
+                        <li>@Exercise.Name</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+    @if (plan.Category == "Circuit") {
+        <div class="card">
+            <div class="card_top_image top-for-circuit">
+                <div class="remove_from_creations bx bx-x" title="Удалить план" data-id=@plan.Id></div>
+                <div class="edit_creation bx bx-sm bx-pencil" title="Редактировать план" data-id=@plan.Id></div>
+            </div>
+            <div class="text">
+                <ul class="list">
+                    @foreach (var Exercise in plan.Exercises) {
+                        <li>@Exercise.Name</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+}

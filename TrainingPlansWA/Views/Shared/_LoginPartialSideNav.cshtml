@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TrainingPlansWA.Areas.Identity.Data
+
+@inject SignInManager<UserModel> SignInManager
+@inject UserManager<UserModel> UserManager
+
+
+
+@if (SignInManager.IsSignedIn(User)) { //проверяет наличие куки (тем самым идентифицируя зарегистрированного пользователя)
+                                      //при удалении БД, если пользователь не вышел из аккаунта, кука не удаляется => переменная user будет null
+    var user = await UserManager.FindByNameAsync(User.Identity.Name);
+    string? displayName;
+    if (user != null) {
+        displayName = @user.FirstName;
+    }
+    else {
+        displayName = "Account doesn't exist";
+    }
+    <div class="sidenav_hidden sidenav_right" id="mySidenavRight">
+        <span class="subtext">@displayName</span>
+        @* вывести почту *@
+        @* <span class="subtext">@UserManager.GetUserName(User)</span> *@
+        <a href="/Favorites" class="sublink"><i class='bx bxs-star'></i> Избранное</a>
+        <a href="/CreatedPlans" class="sublink"> Мои планы</a>
+        <a href="/PlanCreate" class="sublink"><i class='bx bx-book-open'></i> Создать план</a>
+        <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Настройки" class="sublink"><i class='bx bx-wrench'></i> Настройки аккаунта</a>
+        <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "HomePage", new { area = "" })">
+            <button id="logout" class="side_logout" type="submit"><i class='bx bx-exit'></i> Выход</button>
+        </form>
+    </div>
+}
+else {
+    <div class="sidenav_hidden sidenav_right" id="mySidenavRight">
+        <a href="/Identity/Account/Login" class="sublink" title="Вход">Вход</a>
+        <a href="/Favorites" class="sublink"><i class='bx bxs-star'></i> Избранное</a>
+        <a href="/Identity/Account/Register" class="sublink" title="Регистрация"><i class='bx bx-pencil'></i> Регистрация</a>
+    </div>
+}
+

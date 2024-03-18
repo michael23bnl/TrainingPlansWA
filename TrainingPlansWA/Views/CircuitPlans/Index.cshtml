@@ -1,0 +1,86 @@
+﻿@* @model IEnumerable<TrainingPlansWA.Models.Plan> *@
+@model Tuple<IEnumerable<TrainingPlansWA.Models.Plan>, TrainingPlansWA.Areas.Identity.Data.UserModel>
+
+@{
+    ViewData["Title"] = "Круговые тренировки";
+}
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApplication1</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!--подключение gsap и др. скрит-->
+    @*<script src="lib/gsap/gsap.min.js" defer></script>
+    <script src="lib/gsap/ScrollTrigger.min.js" defer></script>
+    <script src="lib/gsap/ScrollSmoother.min.js" defer></script>*@
+    <script src="~/js/UI.js" asp-append-version="true" defer></script>
+    <script src="~/js/site.js" asp-append-version="true" defer></script>
+
+    <!--подключение jquery-->
+    <script src="lib/jquery/dist/jquery.js"></script>
+
+    <!--кнопка наверх-->
+    <script>
+        $(document).ready(function () {
+            var btn = $('#backToTop');
+            $(window).on('scroll', function () {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                    btn.removeClass('show');
+                }
+                else {
+                    if ($(window).scrollTop() > 100) {
+                        btn.addClass('show');
+                    } else {
+                        btn.removeClass('show');
+                    }
+                }
+            });
+            btn.on('click', function (e) {
+                e.preventDefault();
+                $('html, body').animate({
+                    scrollTop: 0
+                }, '300');
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="backToTop" class="back-to-top">
+        <i class="arrow"></i><i class="arrow"></i>
+    </div>
+    <div class="header_indent">
+    <div class="card_section">
+        <div class="card-container">
+            @foreach (var item in Model.Item1) {
+                if (item.Category == "Circuit") {
+                    <div class="card">
+                        <div class="card_top_image top-for-circuit">
+                            <div class="save_to_favorites
+                    @(Model.Item2 != null && Context.Request.Cookies[$"markedPlan_{Model.Item2.Id}_{item.CrossDBId}"] == "true" ? "is-favorite " : "")
+                    bx
+                    @(Model.Item2 != null && Context.Request.Cookies[$"markedPlan_{Model.Item2.Id}_{item.CrossDBId}"] == "true" ? "bxs-star" : "bx-star")"
+                                 title="@(Model.Item2 != null && Context.Request.Cookies[$"markedPlan_{Model.Item2.Id}_{item.Id}"] == "true" ? "Удалить из избранного" : "Добавить в избранное")"
+                                 data-id="@item.Id">
+                            </div>
+                        </div>
+                        <div class="text">
+                            <ul class="list">
+                                @foreach (var Exercise in item.Exercises) {
+                                    <li>@Exercise.Name</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+                else {
+                    continue;
+                }
+            }           
+        </div>
+    </div>
+    </div>
+</body>
+</html>

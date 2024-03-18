@@ -1,0 +1,157 @@
+﻿@model TrainingPlansWA.Models.CreatedPlan
+@* @model Tuple<IEnumerable<TrainingPlansWA.Models.Plan>, TrainingPlansWA.Areas.Identity.Data.UserModel>
+ *@
+@{
+    ViewData["Title"] = "Создать тренировочный план";
+}
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApplication1</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!--подключение gsap и др. скрит-->
+    @*<script src="lib/gsap/gsap.min.js" defer></script>
+    <script src="lib/gsap/ScrollTrigger.min.js" defer></script>
+    <script src="lib/gsap/ScrollSmoother.min.js" defer></script>*@
+    <script src="~/js/UI.js" asp-append-version="true" defer></script>
+    <script src="~/js/site.js" asp-append-version="true" defer></script>
+
+    <!--подключение jquery-->
+    <script src="lib/jquery/dist/jquery.js"></script>
+
+    <!--кнопка наверх-->
+    <script>
+        $(document).ready(function () {
+            var btn = $('#backToTop');
+            $(window).on('scroll', function () {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                    btn.removeClass('show');
+                }
+                else {
+                    if ($(window).scrollTop() > 100) {
+                        btn.addClass('show');
+                    } else {
+                        btn.removeClass('show');
+                    }
+                }
+            });
+            btn.on('click', function (e) {
+                e.preventDefault();
+                $('html, body').animate({
+                    scrollTop: 0
+                }, '300');
+            });
+            //var height = html.scrollHeight;
+
+        });
+    </script>
+</head>
+<body>
+    <div id="backToTop" class="back-to-top">
+        <i class="arrow"></i><i class="arrow"></i>
+    </div>
+    <div class="header_indent">
+    <div id="plan_creation_form_area">
+        <div class="plan_creation_form">
+            @* <form asp-controller="PlanCreate" class="form1" asp-action="Create" method="post"> *@
+            <form asp-controller="PlanCreate" class="form1" asp-action="Create" method="post" onsubmit="return validateForm();">
+
+                <div class="form1_left">
+                    <!-- Другие поля формы -->
+                    <div class="category_label"><label for="Category">Категория:</label><br></div>
+                    <select name="Category" id="Category">
+                        <option value="Hands">Руки</option>
+                        <option value="Legs">Ноги</option>
+                        <option value="Circuit">Круговой</option>
+                    </select>
+                    <div class="exercises_label">
+                        <label>Упражнения:</label>
+                    </div>
+                </div>
+                <div class="form1_center">
+                    <div id="exercises-container">
+
+                        <div class="exercise-row">
+                            <input type="text" name="Exercises[0].Name" placeholder="Название упражнения" />
+                            @* <textarea name="Exercises[0].Name"  placeholder="Название упражнения"></textarea> *@
+
+                            <button type="button" class="remove_exercise" onclick="removeExercise(this)">Удалить</button>
+                        </div>
+                    </div>
+
+                    <button type="button" class="add_exercise" onclick="addExercise()">Добавить упражнение</button>
+
+                    <div>
+                        <input type="submit" value="Создать план" />
+                    </div>
+                </div>
+            </form>
+            <script>
+                let exerciseCount = 1;
+
+                function addExercise() {
+                    const container = document.getElementById('exercises-container');
+                    const newExerciseRow = document.createElement('div');
+                    newExerciseRow.className = 'exercise-row';
+
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.name = `Exercises[${exerciseCount}].Name`;
+                    input.placeholder = 'Название упражнения';
+
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.classList = 'remove_exercise';
+                    button.textContent = 'Удалить';
+                    button.addEventListener('click', function () {
+                        removeExercise(this);
+                    });
+
+                    newExerciseRow.appendChild(input);
+                    newExerciseRow.appendChild(button);
+                    container.appendChild(newExerciseRow);
+
+                    exerciseCount++;
+                }
+
+                function removeExercise(button) {
+                    const row = button.closest('.exercise-row');
+                    row.remove();
+                    exerciseCount--;
+                    //если мы удалили не последнее упражнение, то нужно обновить индексы
+                    //оставшихся упражнений для корректного их вывода
+                    updateExerciseIndexes();
+                }
+                //функция для проверки формы на незаполненные поля ввода
+                function validateForm() {
+                    console.log("validation of creation");
+                    //проверяем, все ли поля для ввода заполнены
+                    const Exercises = document.querySelectorAll('input[name^="Exercises["]');
+                    for (const ex of Exercises) {
+                        if (ex.value.trim() == '') {
+                            // Хотя бы одно упражнение не заполнено, выводим ошибку
+                            alert('Не все поля для ввода заполнены');
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                //функция для обновления индексов упражнений
+                function updateExerciseIndexes() {
+                    const rows = document.querySelectorAll('.exercise-row');
+                    let newExerciseIndex = 0;
+                    rows.forEach((row, index) => {
+                        const nameInput = row.querySelector('input[name^="Exercises["]');
+                        nameInput.name = `Exercises[${newExerciseIndex}].Name`;
+                        newExerciseIndex++;
+                    });
+                }
+            </script>
+        </div>
+    </div>
+      </div>
+</body>
+</html>

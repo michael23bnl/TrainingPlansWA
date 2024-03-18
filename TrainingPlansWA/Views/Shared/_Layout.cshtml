@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @*<title>@ViewData["Title"] - wswa</title>*@
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!--подключение gsap и др. скрит-->
+    <script src="lib/gsap/gsap.min.js" defer></script>
+    <script src="lib/gsap/ScrollTrigger.min.js" defer></script>
+    <script src="lib/gsap/ScrollSmoother.min.js" defer></script>
+
+    <script src="~/js/UI.js" asp-append-version="true" defer></script>
+    @* <script src="~/js/site.js" asp-append-version="true" defer></script> *@
+
+    <!--подключение jquery-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="/favicons/favicon.ico">
+    <script>
+        //function slowScroll(id) {
+        //    $('html, body').animate({
+        //        scrollTop: $(id).offset().top
+        //    }, 500);
+        //}
+        $(document).on("scroll", function () {
+            if ($(window).scrollTop() === 0) {
+                $("div.topnav").css("background-color", "rgba(0, 0, 0, 0.8)");
+                $("div.sidenav").css("background-color", "rgba(0, 0, 0, 0.8)");
+                $("div.dropdown-content").css("background-color", "rgba(0, 0, 0, 0.8)");
+            }
+            else {
+                //$("div.topnav").attr("class", "fixed");
+                $("div.topnav").css("background-color", "rgba(0, 0, 0, 0.85)");
+                $("div.sidenav").css("background-color", "rgba(0, 0, 0, 0.85)");
+                $("div.dropdown-content").css("background-color", "rgba(0, 0, 0, 0.85)");
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="body_wrapper">
+    <header>
+        <div class="topnav" id="myTopnav">
+            <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="show_sidenav_left()">&#9776;</a>
+            @*<img class="site_logo" src="images/site_icon.png" alt="">*@
+            <span class="site_logo">site_logo</span>
+            <div class="header-right">
+                <a href="/" class="active"><i class='bx bx-home-alt-2'></i> Главная</a>
+                <div class="dropdown">
+                    <button class="dropbtn">
+                        Учебно-тренировочные планы <i class='bx bx-chevron-down'></i>
+                    </button>
+                    <div class="dropdown-content plan-links">
+                        <a href="/HandsPlans" class="plans_sublink" title="Планы на руки">Корпус, руки</a>
+                        <a href="/LegsPlans" class="plans_sublink" title="Планы на ноги">Ноги</a>
+                        <a href="/CircuitPlans" class="plans_sublink" title="Круговые тренировки">Круговые тренировки</a>
+                    </div>
+                </div>
+                
+                @* <a href="/FeedbackForm" title="Обратная связь"><i class='bx bx-message-square'></i> Написать нам</a> *@
+                @* <div class="dropdown">
+                    <button class="dropbtn">
+                        <i class='bx bxs-user-account'></i> Аккаунт <i class='bx bx-chevron-down'></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="/Identity/Account/Login" class="sublink" title="Вход">Вход</a>
+                        <a href="/Favorites" class="sublink"><i class='bx bxs-star'></i> Избранное</a>
+                        <a href="/Identity/Account/Register" class="sublink" title="Регистрация"><i class='bx bx-pencil'></i> Регистрация</a>
+                    </div>
+                </div> *@
+                <partial name="_LoginPartialTopNav.cshtml" />
+            </div>
+            <a href="javascript:void(0);" style="font-size:15px;" class="icon1" onclick="show_sidenav_right()"><i class='bx bxs-user-account'></i></a>
+        </div>        
+        <div class="sidenav_hidden sidenav_left" id="mySidenavLeft">
+            <a href="/"><i class='bx bx-home-alt-2'></i> Главная</a>
+            <button class="dropdown-btn">
+                Учебно-тренировочные планы
+                <i class='bx bx-chevron-down'></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="/HandsPlans" class="plans_sublink" title="Планы на руки">Корпус, руки</a>
+                <a href="/LegsPlans" class="plans_sublink" title="Планы на ноги">Ноги</a>
+                <a href="/CircuitPlans" class="plans_sublink" title="Круговые тренировки">Круговые тренировки</a>
+            </div>
+            @* <a href="/FeedbackForm" title="Обратная связь"><i class='bx bx-message-square'></i> Написать нам</a> *@
+        </div>
+        <partial name="_LoginPartialSideNav.cshtml" />
+        @* <div class="sidenav_hidden sidenav_right" id="mySidenavRight">
+
+            <a href="/Identity/Account/Login" class="sublink" title="Вход">Вход</a>
+            <a href="/Favorites" class="sublink"><i class='bx bxs-star'></i> Избранное</a>
+            <a href="/Identity/Account/Register" class="sublink" title="Регистрация"><i class='bx bx-pencil'></i> Регистрация</a>
+               
+        
+        </div> *@
+        <script>
+            /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+            var dropdown = document.getElementsByClassName("dropdown-btn");
+            var i;
+            for (i = 0; i < dropdown.length; i++) {
+                dropdown[i].addEventListener("click", function () {
+                    this.classList.toggle("activee");
+                    var dropdownContent = this.nextElementSibling;
+                    if (dropdownContent.style.display === "block") {
+                        dropdownContent.style.display = "none";
+                    } else {
+                        dropdownContent.style.display = "block";
+                    }
+                });
+            }
+        </script>
+        <script>
+            function show_sidenav_left() { //показать/скрыть левую панель навигации 
+                var x = document.getElementById("mySidenavLeft"); //левая панель
+                if (x.className === "sidenav_hidden sidenav_left") { //проверяем, спрятана ли левая панель
+                    x.className = "sidenav sidenav_left"; //делаем левую панель видимой
+                    var y = document.getElementById("mySidenavRight"); //правая панель
+                    //далее если до открытия левой панели правая была открыта, то закрываем правую панель
+                    if (y.className === "sidenav sidenav_right") { //проверяем, открыта ли правая панель
+                        y.className = "sidenav_hidden sidenav_right"; //скрываем правую панель
+                    }
+                } else { //левая панель открыта
+                    x.className = "sidenav_hidden sidenav_left"; //скрываем левую панель
+                }
+            }
+            function show_sidenav_right() { //показать/скрыть правую панель навигации
+                var x = document.getElementById("mySidenavRight"); //правая панель
+                if (x.className === "sidenav_hidden sidenav_right") { //проверяем, спрятана ли правая панель
+                    x.className = "sidenav sidenav_right"; //делаем правую панель видимой
+                    var y = document.getElementById("mySidenavLeft"); //левая панель
+                    //далее если до открытия правой панели левая была открыта, то закрываем левую панель
+                    if (y.className === "sidenav sidenav_left") { //проверяем, открыта ли левая панель
+                        y.className = "sidenav_hidden sidenav_left"; //скрываем левую панель
+                    }
+                } else { //правая панель открыта
+                    x.className = "sidenav_hidden sidenav_right"; //скрываем правую панель
+                }
+            }
+        </script>
+    </header>
+
+
+
+
+
+
+    <main class="main">
+        @RenderBody()
+    </main>
+    <footer>
+        <div id="semiEndLine">
+            <h2>Полезная информация</h2>
+        </div>
+        <div class="helpful_info_container">
+            <div class="info">
+                <div class="bottom_logo">
+                    <div class="logo_line">
+                        @*<img class="site_logo" src="images/site_icon.png" alt="">*@
+                        <span class="site_logo">site_logo</span>
+                    </div>
+                </div>
+                <div class="contact_info">
+                    <div class="info_block">
+                        <div class="info_block_article">Контакты</div>
+                        <ul class='bx-ul'>
+                            <li><i class='bx bx-mobile '></i>+7 777 777 77 77 – Номер</li>
+                            <li><i class='bx bx-mail-send '></i><a href="#"><span class="contact_links">example1@gmail.com</span></a> – Почта 1</li>
+                            <li><i class='bx bx-mail-send '></i><a href="#"><span class="contact_links">example2@gmail.com</span></a> – Почта 2</li>
+                        </ul>
+                    </div>
+                    <div class="info_block">
+                        <div class="info_block_article">Это интересно</div>
+                        <ul class='bx-ul'>
+                            @* <li><i class='bx bxl-youtube'></i><a href="https://youtu.be/y4piUX4Fhxw" target="_blank"><span class="contact_links">https://youtu.be/y4piUX4Fhxw</span></a> – Профилактика кифоза</li>
+                            <li><i class='bx bxl-youtube'></i><a href="https://youtu.be/aefpVWUUhEA" target="_blank"><span class="contact_links">https://youtu.be/aefpVWUUhEA</span></a> – Выравнивание таза</li>
+                            <li><i class='bx bxl-youtube'></i><a href="https://youtu.be/_X0LvpC7af0" target="_blank"><span class="contact_links">https://youtu.be/_X0LvpC7af0</span></a> – Кардио дома</li> *@
+                            <li><i class='bx bxl-youtube'></i><a href="#" target="_blank"><span class="contact_links">https://link1</span></a> – Ссылка 1</li>
+                            <li><i class='bx bxl-youtube'></i><a href="#" target="_blank"><span class="contact_links">https://link2</span></a> – Ссылка 2</li>
+                            <li><i class='bx bxl-youtube'></i><a href="#" target="_blank"><span class="contact_links">https://link3</span></a> – Ссылка 3</li>
+                        </ul>
+                    </div>
+                    <div class="img">
+                        <img class="sportsman" src="~/images/sportsman.png" alt="">
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="social_media_links">
+
+                    <div class="niceone">
+                        <a href="#"><img class="social_media_icon" src="~/images/vk_icon.png" alt=""></a>
+                        <a href="#"><img class="social_media_icon" src="~/images/telegram_icon.png" alt=""></a>
+                        <a href="#"><img class="social_media_icon" src="~/images/discord_icon.png" alt=""></a>
+                    </div>
+                    <span class="social_media_text">Мы в социальных сетях</span>
+
+                </div><div class="all_rights_reserved_section">
+                    <span>Copyright © 2023-2024</span>
+                    <span>No rights reserved.</span>
+                </div>
+            </div>
+
+        </div>
+
+    </footer>
+    @await RenderSectionAsync("Scripts", required: false)
+    </div>
+</body>
+</html>
+
+
+
+

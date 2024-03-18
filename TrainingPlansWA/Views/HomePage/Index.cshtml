@@ -1,0 +1,185 @@
+﻿@{
+    ViewData["Title"] = "Главная страница";
+}
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @*<title>@ViewData["Title"] - WebApplication1</title>*@
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!--подключение gsap и др. скрит-->
+    <script src="~/lib/gsap/gsap.min.js" defer></script>
+    <script src="~/lib/gsap/ScrollSmoother.min.js" defer></script>
+    <script src="~/lib/gsap/ScrollTrigger.min.js" defer></script>
+    <script src="~/js/site.js" defer></script>
+    <!--подключение jquery-->
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                } else {
+                    reveals[i].classList.remove("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+    </script>
+</head>
+<body>
+    <div id="top">
+        <div class="animation_container">
+            <div class="overflow-hidden">
+                <h1 class="header drop-in">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+            </div>
+            <div class="overflow-hidden">
+                <h3 class="drop-in-2">Sed magna enim, semper non orci at, pharetra aliquet sapien. Vestibulum in.</h3>
+            </div>
+        </div>
+    </div>
+    <div class="examples">
+        <h2>Преимущества</h2>
+        <section>
+
+            <div class="container reveal">
+
+                <div class="text-container">
+                    <div class="text-box">
+                        <img class="advantages_img" src="images/like_icon.png" atl="">
+                        <h3>Lorem ipsum</h3>
+                        <span>
+                            Lorem ipsum dolor<br>
+                            sit amet, consectetur<br>
+                            adipiscing elit.<br>
+                            Donec in.
+                        </span>
+                    </div>
+                    <div class="text-box">
+                        <img class="advantages_img" src="images/speedometr_icon.png" atl="">
+                        <h3>Lorem ipsum</h3>
+                        <span>
+                            Lorem ipsum dolor<br>
+                            sit amet,<br>
+                            consectetur adipiscing elit.<br>
+                            Quisque euismod<br>
+                            tristique ex.
+                            
+                        </span>
+                    </div>
+                    <div class="text-box">
+                        <img class="advantages_img" src="images/list_icon.png" atl="">
+                        <h3>Lorem ipsum</h3>
+                        <span>
+                            Lorem ipsum dolor<br>
+                            sit amet, consectetur<br>
+                            adipiscing elit.<br>
+                            Phasellus.
+                        </span>
+                    </div>
+                    <div class="text-box">
+                        <img class="advantages_img" src="images/warranty_icon.webp" atl="">
+                        <h3>Lorem ipsum</h3>
+                        <span>
+                            Lorem ipsum dolor sit<br>
+                            amet, consectetur<br>
+                            adipiscing elit.<br>
+                            Praesent mollis ultrices.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="plan_examples">
+        <div class="container">
+            <h2 class="gallery__header">Примеры тренировочных планов</h2>
+            <div class="gallery">
+                <div class="gallery__left">
+                    <div class="gallery__item">
+                        <h3 class="example_header">Корпус, руки</h3>
+                        <ul>
+                            <li>Жим штанги лёжа 3х8</li>
+                            <li>Разводка гантель лёжа 3х8</li>
+                            <li>Разводка гантель сидя полная амплитуда 3х12</li>
+                            <li>Бицепс с кривой штангой 4-4-4 х 3</li>
+                            <li>Бицепс с гантелью стоя в наклоне 3х12 без отдыха</li>
+                            <li>Кисти с грифом сидя 3 х макс</li>
+                            <li>Пресс, планка</li>
+                        </ul>
+                    </div>
+                    <div class="gallery__item">
+                        <h3 class="example_header">Ноги</h3>
+                        <ul>
+                            <li>Разминка коленок 2х15</li>
+                            <li>Гиперэкстензия 2х20</li>
+                            <li>Жим ногами 25-20-18-15-12-10 с увеличением веса</li>
+                            <li>Шаги-фермера с тяжелыми гантелями 3х12</li>
+                            <li>Передняя п-ов бедра, начиная с максимального веса и снижая его 8-10-12-15-18-20-25</li>
+                            <li>Икры в тренажёре 3хмакс</li>
+                            <li>Пресс, планка</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="gallery__right">
+                    <div class="gallery__item">
+                        <h3 class="example_header">Круговая тренировка</h3>
+                        <ul>
+                            <li>Гиперэкстензия (все круги по 15 раз)</li>
+                            <li>+</li>
+                            <li>Жим гантель лёжа 15</li>
+                            <li>+</li>
+                            <li>Жим гантель стоя 15</li>
+                            <li>+</li>
+                            <li>Перекладина с резиной (все круги по 6 раз, хват широкий)</li>
+                            <li>+</li>
+                            <li>Присед с гирей 25-20-15</li>
+                            <li>+</li>
+                            <li>Бицепс с гантелями стоя (можно заменить на штангу) 12</li>
+                            <li>+</li>
+                            <li>Франц.жим стоя с одной гантелью 18</li>
+                            <li>+</li>
+                            <li>Пресс на коврике 25</li>
+                            <li>+</li>
+                            <li>Планка 1’</li>
+                            <li>3 круга</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="overview"></div>
+    <div class="anima">
+        <div class="hidden">
+            <div class="advantages_section">
+                <div class="left_side">
+                    <div class="advantages_item">
+                        <h2>Lorem ipsum dolor sit amet</h2>
+                        <h3>Vestibulum consectetur</h3>
+                        <span>Proin sit amet turpis in libero faucibus fermentum</span>
+                    </div>
+                </div>
+                <div class="right_side">
+                    <div class="advantages_item">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vehicula pretium enim, eget interdum neque tincidunt ut. Vivamus eget diam sit amet ipsum placerat varius. Ut condimentum malesuada magna. Quisque faucibus ante in facilisis suscipit. Donec molestie arcu at diam pulvinar interdum. Duis dapibus posuere augue, placerat convallis magna rhoncus id. Curabitur vitae pellentesque magna, in sagittis sem. Morbi porta, nulla at ullamcorper posuere, mi purus venenatis massa, ac condimentum metus lacus ut risus.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

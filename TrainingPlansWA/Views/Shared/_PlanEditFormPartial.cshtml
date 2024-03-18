@@ -1,0 +1,120 @@
+﻿@model TrainingPlansWA.Models.CreatedPlan
+<div id="plan_creation_form_area">
+    <div class="plan_creation_form">
+        <form asp-controller="CreatedPlans" id="plan_edit_form" class="form1" asp-action="SaveEditedPlan" method="post" onsubmit="return validateForm();">
+            <h2>Редактирование плана</h2>
+            <div class="form1_left">
+                <!-- Другие поля формы -->
+                <input type="hidden" name="planId" value="@Model.Id" />
+
+                <div class="category_label"><label for="Category">Категория:</label><br></div>
+                <select name="Category" id="Category">
+                    @if(Model.Category == "Hands") {
+                        <option value="Hands" selected>Руки</option>
+                    }
+                    else {
+                    <option value="Hands">Руки</option>
+                    }
+                    @if (Model.Category == "Legs") {
+                        <option value="Legs" selected>Ноги</option>
+                    }
+                    else {
+                    <option value="Legs">Ноги</option>
+                    }
+                    @if (Model.Category == "Circuit") {
+                        <option value="Circuit" selected>Круговой</option>
+                    }
+                    else {
+                    <option value="Circuit">Круговой</option>
+                    }
+                </select>
+                <div class="exercises_label">
+                    <label>Упражнения:</label>
+                </div>
+            </div>
+            <div class="form1_center">
+                <div id="exercises-container">
+                    @{
+                        int exercise_index = 0;
+                    }
+                    @foreach (var ex in Model.Exercises) {
+                        <div class="exercise-row">
+                            <input type="text" name="Exercises[@exercise_index].Name" value="@ex.Name" />
+                            <button type="button" class="remove_exercise" onclick="removeExercise(this)">Удалить</button>
+                        </div>
+                        exercise_index++;
+                    }
+                    <button type="button" class="add_exercise" onclick="addExercise(this)">Добавить упражнение</button>
+
+                </div>
+                <div>
+                    <input type="submit" class="submit_input_type" value="Сохранить изменения" />
+                </div>
+            </div>
+        </form>
+        <script>
+            let exerciseCount = @Model.Exercises.Count;
+            function addExercise(addButton) {
+                //const form_center = addButton.closest('.form1_center');
+                const container = addButton.closest("#exercises-container");
+                //const container = document.getElementById('exercises-container');
+                const newExerciseRow = document.createElement('div');
+                newExerciseRow.className = 'exercise-row';
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = `Exercises[${exerciseCount}].Name`;
+                input.placeholder = 'Название упражнения';
+
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.classList = 'remove_exercise';
+                button.textContent = 'Удалить';
+                button.addEventListener('click', function () {
+                    removeExercise(this);
+                });
+
+                newExerciseRow.appendChild(input);
+                newExerciseRow.appendChild(button);
+                //container.appendChild(newExerciseRow);
+                container.insertBefore(newExerciseRow, addButton)
+                exerciseCount++;
+            }
+
+            function removeExercise(button) {
+                //console.log("edited");
+                const row = button.closest('.exercise-row');
+                row.remove();
+                exerciseCount--;
+                //если мы удалили не последнее упражнение, то нужно обновить индексы
+                //оставшихся упражнений для корректного их вывода
+                updateExerciseIndexes();
+            }
+            //функция для проверки формы на незаполненные поля ввода
+            function validateForm() {
+                console.log("validation of editing");
+                //проверяем, все ли поля для ввода заполнены
+                const Exercises = document.querySelectorAll('input[name^="Exercises["]');
+                for (const ex of Exercises) {
+                    if (ex.value.trim() == '') {
+                        // Хотя бы одно упражнение не заполнено, выводим ошибку
+                        alert('Не все поля для ввода заполнены');
+                        return false;
+                    }
+                }
+                return true;
+            }
+            //функция для обновления индексов упражнений
+            function updateExerciseIndexes() {
+                const rows = document.querySelectorAll('.exercise-row');
+                let newExerciseIndex = 0;
+                rows.forEach((row, index) => {
+                    const nameInput = row.querySelector('input[name^="Exercises["]');
+                    nameInput.name = `Exercises[${newExerciseIndex}].Name`;
+                    newExerciseIndex++;
+                });
+            }
+        </script>
+    </div>
+</div>
+                
